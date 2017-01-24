@@ -21,8 +21,6 @@ void setup()
   Serial.print(MYNODEID,DEC);
   Serial.println("pripraven");  
 
-  // Initialize the RFM69HCW:
-
   radio.initialize(FREQUENCY, MYNODEID, NETWORKID);
   radio.setHighPower();
 
@@ -36,6 +34,7 @@ void loop()
   static char sendbuffer[62];
   static int sendlength = 0;
 
+  // ODESILANI
 
   if (Serial.available() > 0)
   {
