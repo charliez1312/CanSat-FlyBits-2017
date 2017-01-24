@@ -2,8 +2,8 @@
 #include <SPI.h>
 
 #define NETWORKID     0
-#define MYNODEID      2
-#define TONODEID      1 
+#define MYNODEID      2 //prohodit
+#define TONODEID      1 //prohodit
 
 #define FREQUENCY   RF69_433MHZ
 
@@ -19,9 +19,12 @@ void setup()
   Serial.begin(9600);
   Serial.print("Vysilac ");
   Serial.print(MYNODEID,DEC);
-  Serial.println("pripraven");  
+  Serial.println(" pripraven");
+
+  
 
   radio.initialize(FREQUENCY, MYNODEID, NETWORKID);
+  radio.setFrequency(433700000);
   radio.setHighPower();
 
   if (ENCRYPT)
@@ -30,7 +33,6 @@ void setup()
 
 void loop()
 {
-
   static char sendbuffer[62];
   static int sendlength = 0;
 
@@ -94,6 +96,5 @@ void loop()
       radio.sendACK();
       Serial.println("ACK odeslan");
     }
-
   }
 }
