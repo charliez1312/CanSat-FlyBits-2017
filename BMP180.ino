@@ -15,15 +15,15 @@ void loop() {
   Serial.print(" Index: ");
   Serial.print(index);
   
-  Serial.print(" Teplota [stupen Celsia]: ");
+  Serial.print(" ;Teplota [stupen Celsia]: ");
   Serial.print(bmp180.readTemperature());
 
-  Serial.print(" Tlak [Pascal]: ");
+  Serial.print(" ;Tlak [Pascal]: ");
   Serial.print((bmp180.readPressure() + correction*100)/100.00);
 
-  Serial.print(" Nadmorska vyska [metr]: ");
+  Serial.print(" ;Nadmorska vyska [metr]: ");
   Serial.println(bmp180.readAltitude(bmp180.readPressure() + correction*100));
   
   delay(1000);
-  index = index + 1;
+  index++;
 }
