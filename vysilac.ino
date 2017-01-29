@@ -44,7 +44,7 @@ void loop()
 {
   String teplota = "Teplota: " + String(bmp180.readTemperature()) + " C;";
   String tlak = " Tlak: " + String((bmp180.readPressure() + korekce*100)/100.00) + " P;";
-  String vyska = " Nadm. vyska: " + String(bmp180.readAltitude(bmp180.readPressure() + korekce*100));
+  String vyska = " Nadm. vyska: " + String(bmp180.readAltitude(bmp180.readPressure() + korekce*100)) + "mnm";
 
   String data = teplota + tlak + vyska;
 
