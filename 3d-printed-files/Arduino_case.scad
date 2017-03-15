@@ -1,27 +1,6 @@
-use<Write.scad>
+include<Values.scad>
 
 $fn = 20;
-
-ven_delka = 114;
-ven_sirka = 62;
-ven_vyska = 36;
-
-vnit_delka = 110;
-vnit_sirka = 58;
-vnit_vyska = 33;
-
-usb_sirka = 12;
-usb_vyska = 12; //?
-vzdal_usb_z = (ven_vyska - vnit_vyska) + 5; //?
-vzdal_usb_x = (ven_sirka - vnit_sirka) / 2 + 9;
-
-antena_prumer = 13;
-vzdal_antena_x = 38;
-vzdal_antena_z = 25; //?
-
-rozek_rozm = 6;
-
-kryt_vyska = 3;
 
 module rozek()
 {
@@ -44,20 +23,10 @@ module otvory()
 }
 
 
-//difference()
-//{
-//    obal();
-//    otvory();
-//}
-
-//translate([100, 0, 0]) rozek();
-
-module kryt()
+difference()
 {
-    cube([ven_sirka, ven_delka, kryt_vyska]);
-    color("red") rotate([0, 0, 90]) translate([0, 0, 20]) write("FlyBits", h = 20, t = 3);
-
-
+    obal();
+    otvory();
 }
 
-kryt();
+translate([100, 0, 0]) rozek();
