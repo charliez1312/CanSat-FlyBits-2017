@@ -1,13 +1,24 @@
 use<Write.scad>
-include<Values.scad>
+include<Arduino_case_values.scad>
 
 $fn = 30;
 
 module kryt()
 {
-    cube([ven_sirka, ven_delka, kryt_vyska]);
-    color("red") rotate([0, 0, 90]) translate([0, 0, 20]) write("FlyBits", h = 20, t = 3);
-
+    difference()
+    {
+        union()
+        {
+        cube([ven_sirka, ven_delka, kryt_vyska]);
+        color("red") rotate([0, 0, 90]) translate([17, -39, kryt_vyska]) write("Fly", h = 17, t = vyska_pisma);
+        color("red") rotate([0, 0, 90]) translate([56, -39, kryt_vyska]) write("Bits", h = 17, t = vyska_pisma);
+        }
+         
+    translate([17, 5, 0]) cylinder(d = rozek_dira, h = kryt_vyska);
+    translate([57, 5, 0]) cylinder(d = rozek_dira, h = kryt_vyska);
+    translate([57, 111, 0]) cylinder(d = rozek_dira, h = kryt_vyska);
+    translate([5, 111, 0]) cylinder(d = rozek_dira, h = kryt_vyska);
+}
 }
 
 kryt();
