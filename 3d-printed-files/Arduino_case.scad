@@ -1,6 +1,7 @@
 include<Arduino_case_values.scad>
+use<Write.scad>
 
-$fn = 15;
+$fn = 300;
 
 module rozek()
 {
@@ -12,7 +13,16 @@ module rozek()
             translate([1.1, rozek_rozm, -0.55]) rotate([90, -7, 0]) cylinder(d = 10, h = rozek_rozm, $fn=3);
         }
         color("red") translate([-5, 0, -5.2]) cube([5, rozek_rozm, 12.3]);
-        translate([3, 3, -3]) cylinder(d = 1.5, h = 12);
+        translate([3, 3, -3]) cylinder(d = rozek_dira, h = 12);
+    }
+}
+
+module nastavec()
+{
+    difference()
+    {
+        cylinder(d = nastavec_prumer, h = nastavec_vyska);
+        cylinder(d = nastavec_prumer_dira, h = nastavec_vyska);
     }
 }
 
@@ -27,8 +37,12 @@ module obal()
     translate([60, 2, 32]) rotate([0, 0, 90]) rozek();
     translate([2, 114, 32]) rotate([0, 0, 270]) rozek();
     translate([54, 114, 32]) rotate([0, 0, 270]) rozek();
+    
+    translate([4, 17, nastavec_vyska]) nastavec();
+    translate([4, 92, nastavec_vyska]) nastavec();
+    translate([52, 16, nastavec_vyska]) nastavec();
+    translate([52, 99, nastavec_vyska]) nastavec();
 }
-
 
 module otvory()
 {
