@@ -29,3 +29,5 @@ nastavec_prumer_dira = 1.5;
 
 kryt_vyska = 2;
 vyska_pisma = 2;
+
+ledka_rozmer = 5;
