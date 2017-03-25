@@ -1,11 +1,14 @@
-$fn = 30;
+$fn = 200;
 
 prumer = 65;
-vyska = 114;
+vyska = 115;
 stena = 2.5;
 
-sirka_cidla = 12;
-vyska_cidla = 50;
+sirka_deska_soucastky = 12;
+vyska_deska_soucastky = 50;
+
+vnejsi_prumer_zavit = prumer - 2 * stena;
+vnitrni_prumer_zavit = vnejsi_prumer_zavit - 5;
 
 module cansat()
 {
@@ -16,15 +19,37 @@ module cansat()
     }
 }
 
-module otvory()
+module deska_soucastky()
 {
-    color("red") translate([-prumer/2 - stena, -sirka_cidla/2, 25]) cube([stena*3, sirka_cidla, vyska_cidla]);
+    translate([-prumer/2 - stena, -sirka_deska_soucastky/2, 25]) cube([stena*3, sirka_deska_soucastky, vyska_deska_soucastky]);
 }
 
 module drzak_desky()
 {
-    translate() cube(4);
-    translate() cube(5);
+    module drzak_desky_hlavni()
+    {
+        translate([-4, 0 , 0]) cube([3, 4, vyska - stena]);
+        translate([1, 0, 0]) cube([3, 4, vyska - stena]);
+    }
+    translate([0, 26, 0]) drzak_desky_hlavni();
+    translate([0, -30, 0]) drzak_desky_hlavni();
+}
+
+module zavit()
+{
+    translate([0, 0, 106.5]) difference()
+    {
+        difference()
+        {
+            cylinder(d = vnejsi_prumer_zavit, h = 8.5);
+            cylinder(d = vnitrni_prumer_zavit, h = 8.5);
+        }
+        union()
+        {
+            translate([-1, 27, 0]) cube([2, 3, 15]);
+            translate([-1, -30, 0]) cube([2, 3, 15]);
+        }
+}
 }
 
 
@@ -33,7 +58,8 @@ difference()
     union()
     {
         cansat();
-        translate([50, 0, 0]) drzak_desky();
+        drzak_desky();
+        zavit();
     }
-    otvory();
+    deska_soucastky();
 }
