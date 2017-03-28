@@ -16,6 +16,9 @@ RFM69 radio;
 
 void setup()
 {
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  digitalWrite(6, HIGH);
   Serial.begin(9600);
   Serial.print("Vysilac ");
   Serial.print(MYNODEID,DEC);
@@ -35,15 +38,16 @@ void loop()
 
   if (radio.receiveDone())
   {
-    Serial.print("zprava [");
-
     for (byte i = 0; i < radio.DATALEN; i++)
     {
       Serial.print((char)radio.DATA[i]);
     }
 
-    Serial.print("], intenzita signalu ");
+    Serial.print(" intenzita signalu ");
     Serial.println(radio.RSSI);
+    digitalWrite(7, HIGH);
+    delay(15);
+    digitalWrite(7, LOW);
 
     if (radio.ACKRequested())
     {
