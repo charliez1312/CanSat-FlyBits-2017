@@ -35,6 +35,11 @@ String den_noc = "err";
 
 RTC_DS1307 RTC;
 
+int fotorezistor_hodnota = 0;
+
+int reprak = 4;
+int reprak_pocet;
+float nadmorska_vyska_zaloha = 0;
 
 void setup()
 {  
@@ -48,10 +53,16 @@ void setup()
     radio.encrypt(ENCRYPTKEY);
   }
   dht.begin();
-  
-  bmp.begin();
+
+    bmp.begin();
+  delay(100);
 
   RTC.begin();
+  delay(100);
+  RTC.adjust(DateTime(__DATE__, __TIME__));
+  
+  pinMode(reprak, OUTPUT);
+  //digitalWrite(reprak, HIGH);
 
   Serial.begin(9600);
   
@@ -61,27 +72,51 @@ void setup()
 void loop()
 {  
   String teplota_dht = "TD" + String(float(dht.readTemperature())) + "C";
-  String vlhkost = " VL" + String(float(dht.readHumidity()));
+  String vlhkost = " VL" + String(int(dht.readHumidity()));
 
   String teplota_bmp = "TB" + String(float(bmp.readTemperature()));
-  String tlak = " Tl" + String(float(bmp.readPressure()));
-  String nadm_vyska = "NV" + String(float(bmp.readAltitude()));
+  String tlak = " Tl" + String(int(bmp.readPressure()));
+
+  float nadm_vyska_cislo = bmp.readAltitude();
+  
+  //String nadm_vyska = "NV" + String(float(bmp.readAltitude()));
+  String nadm_vyska = "NV" + String(nadm_vyska_cislo);
+
+  if ((nadmorska_vyska_zaloha > 0.0) && (nadmorska_vyska_zaloha - 1 <= nadm_vyska_cislo <= nadmorska_vyska_zaloha + 1))
+  {
+    reprak_pocet++;
+    if (reprak_pocet >= 250)
+    {
+      digitalWrite(reprak, HIGH);
+    }
+  }
+  else
+  {
+    nadmorska_vyska_zaloha = nadm_vyska_cislo;
+    reprak_pocet = 0;
+  }
 
   String svetlo = "Sv" + String(float(analogRead(A1) * 0.9765625));
 
-  if (analogRead(A0) > 100)
+
+  fotorezistor_hodnota = analogRead(A0);
+  
+  
+  if (fotorezistor_hodnota > 150)
   {
-    String den_noc = "D:";
+    String den_noc = "D";
   }
   else
   {
     String den_noc = "N";
   }
 
+  delay(50);
+
   DateTime now = RTC.now();
   String cas = String(now.hour(), DEC) + ":" + String(now.minute(), DEC) + ":" + String(now.second(), DEC);
 
-  String data = cas + teplota_dht + vlhkost + teplota_bmp + tlak + nadm_vyska + den_noc + svetlo;
+  String data = cas + teplota_dht + vlhkost + teplota_bmp + tlak + nadm_vyska + svetlo + "v" + String(float(reprak_pocet));
 
   int delka = data.length();
 
@@ -91,5 +126,5 @@ void loop()
   }
   radio.send(TONODEID, sendbuffer, delka);
 
-  delay(100);
+  delay(50);
 }
