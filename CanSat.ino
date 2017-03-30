@@ -71,8 +71,8 @@ void setup()
 
 void loop()
 {  
-  String teplota_dht = "TD" + String(float(dht.readTemperature())) + "C";
-  String vlhkost = " VL" + String(int(dht.readHumidity()));
+  String teplota_dht = "TD" + String(float(dht.readTemperature()));
+  String vlhkost = "VL" + String(int(dht.readHumidity()));
 
   String teplota_bmp = "TB" + String(float(bmp.readTemperature()));
   String tlak = " Tl" + String(int(bmp.readPressure()));
@@ -111,7 +111,7 @@ void loop()
     String den_noc = "N";
   }
 
-  delay(50);
+  delay(30);
 
   DateTime now = RTC.now();
   String cas = String(now.hour(), DEC) + ":" + String(now.minute(), DEC) + ":" + String(now.second(), DEC);
@@ -126,5 +126,5 @@ void loop()
   }
   radio.send(TONODEID, sendbuffer, delka);
 
-  delay(50);
+  delay(30);
 }
